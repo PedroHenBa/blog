@@ -93,4 +93,33 @@ Router.post("/articles/update", function (req, res) {
     ).then( () => res.redirect("/admin/articles"))
 });
 
+Router.get('/articles/page/:num', function (req, res) {
+    const page = req.params.num;
+    let offset;
+    if(isNaN(page)){
+        offset = 0;
+    }else{
+        offset = parseInt(page) * 8;
+    }
+    Article.findAndCountAll({
+        order : [['id', 'DESC']],
+        limit : 8,
+        offset : offset
+    })
+        .then(articles => {
+            let next;
+            next = offset + 8 <= articles.count;
+
+
+            const result = {
+                page :  parseInt(page),
+                next : next,
+                articles : articles
+            }
+            Category.findAll().then(categories =>{
+            res.render('admin/articles/page', {result, categories});
+            })
+        })
+})
+
 module.exports = Router;

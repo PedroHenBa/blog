@@ -32,7 +32,8 @@ app.use('/', articleController);
 
 app.get('/', function (req, res) {
     Article.findAll({
-        order : [['id', 'DESC']]
+        order : [['id', 'DESC']],
+        limit : 8
     })
         .then((articles) => {
             Category.findAll()
