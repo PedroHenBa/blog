@@ -33,10 +33,10 @@
 
         <% categories.forEach( category => { %>
             <tr>
-                <th> <%= category.id %> </th>
-                <th> <%= category.title %> </th>
-                <th> <%= category.slug %> </th>
-                <th>
+                <td> <%= category.id %> </td>
+                <td> <%= category.title %> </td>
+                <td> <%= category.slug %> </td>
+                <td>
 
                     <a class="btn btn-warning" href="/admin/categories/edit/<%= category.id %>">Editar</a>
 
@@ -47,7 +47,7 @@
                         </button>
                     </form>
 
-                </th>
+                </td>
             </tr>
         <% }) %>
         </tbody>

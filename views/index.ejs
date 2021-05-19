@@ -1,11 +1,22 @@
 <%- include('partials/header.ejs') %>
 
 <body>
-<%- include('partials/navBar.ejs') %>
+<%- include('partials/homenavBar.ejs') %>
 
 <div class="container">
-    <h1 class="display-3" id="oi"> Salve</h1>
+
+    <div class="text-center" >
+
+    <h1 class="display-2 mb-5 mt-3" > Artigos</h1>
+
+    </div>
+    <div class="list-group" >
+    <% articles.forEach( article => { %>
+            <a href="/<%= article.slug%>" class="list-group-item list-group-item-action mt-3 rounded p-3 lead border border-dark">
+                <%= article.title %>
+            </a>
+    <% }) %>
+    </div>
 </div>
-</body>
 
 <%- include('partials/footer.ejs') %>

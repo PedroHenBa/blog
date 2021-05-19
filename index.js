@@ -17,22 +17,72 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 //body parser
-app.use(bodyParser.urlencoded({extended : false}));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 //connection database
 connection.authenticate()
-    .then( () => console.log('conexao feita com sucesso'))
-    .catch( error => console.log(error));
+    .then(() => console.log('conexao feita com sucesso'))
+    .catch(error => console.log(error));
 
 //using the routes of categories controller
 
 app.use("/", categoriesController); // / is the prefix used for acesses the routes of categories controller
 app.use('/', articleController);
 
-app.get('/', function (req, res){
-    res.render('index');
+app.get('/', function (req, res) {
+    Article.findAll({
+        order : [['id', 'DESC']]
+    })
+        .then((articles) => {
+            Category.findAll()
+                .then((categories) => {
+                    res.render('index', {articles: articles, categories : categories});
+                })
+        })
 });
+
+app.get('/:slug', function (req, res) {
+    const slug = req.params.slug;
+    Article.findOne({
+        where: {slug: slug}
+    })
+        .then((article) => {
+            if (article) {
+                Category.findAll()
+                    .then((categories) => {
+                        res.render('article', {article: article, categories : categories});
+                    })
+            }else{
+                res.redirect('/');
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            res.redirect('/');
+        })
+});
+
+app.get('/category/:slug', function (req, res) {
+    const slug = req.params.slug;
+    Category.findOne({
+        where : {slug : slug},
+        include : [{model : Article}]
+    })
+        .then( (category) => {
+            if(category){
+                Category.findAll()
+                    .then((categories) => {
+                        res.render('index', {articles: category.articles , categories : categories});
+                    })
+            }else{
+                res.redirect('/');
+            }
+        })
+        .catch( (error) => {
+            console.log(error);
+        })
+})
 
 app.listen(8080, function () {
     console.log('servidor rodando');

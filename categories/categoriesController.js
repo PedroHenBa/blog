@@ -43,7 +43,6 @@ Router.get('/admin/categories', function (req, res) {
 //rota para deletar uma categoria do banco de dados
 Router.post("/categories/delete", function (req, res) {
     const id = req.body.id;
-    console.log(id);
     if (id){
         Category.destroy({
             where : {id : id}

@@ -1,0 +1,75 @@
+<%- include('../../partials/header.ejs') %>
+<body>
+<%- include('../../partials/navBar.ejs') %>
+
+<div class="container">
+
+    <div class="mb-5 mt-5 row align-items-center">
+
+        <div class="col-6">
+            <h1 class="display-6">Artigos</h1>
+        </div>
+
+        <div class="col-6 d-flex justify-content-end">
+            <a class="btn btn-outline-dark" href="/admin/articles/new">Novo Artigo</a>
+        </div>
+
+    </div>
+
+    <table class="table table-dark table-striped table-hover table-bordered">
+
+        <thead>
+
+        <tr>
+            <th>ID</th>
+            <th>Titulo</th>
+            <th>Slug</th>
+            <th>Categoria</th>
+            <th>Acoes</th>
+        </tr>
+
+        </thead>
+
+        <tbody>
+        <% articles.forEach( article => { %>
+            <tr>
+                <td> <%= article.id %> </td>
+                <td> <%= article.title %> </td>
+                <td> <%= article.slug %> </td>
+                <td><%= article.category.title %> </td>
+                <td>
+                    <a class="btn btn-warning" href="/admin/articles/edit/<%= article.id %>">Editar</a>
+
+                    <form action="/articles/delete" method="POST" class="d-inline">
+                        <input type="hidden" name="id" value="<%= article.id %>">
+                        <button class="btn btn-danger" data-text="Do you really want to delete that category"
+                                data-confirm-button="yes" data-cancel-button="no">Deletar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<script>
+    $(function () {
+        $('form').on('submit', function (e) {
+            const confirmRemove = confirm('Quer realmente excluir esse artigo?')
+            if (!confirmRemove) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+
+
+<%- include('../../partials/footer.ejs') %>
