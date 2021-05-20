@@ -3,10 +3,11 @@ const Router = express.Router();
 const Article = require('./Article.js');
 const Category = require('../categories/Category');
 const slugify = require('slugify');
+const adminAuth = require('../middleware/adminAuth');
 
 
 //rota onde ficam os artigos
-Router.get("/admin/articles", function (req,res) {
+Router.get("/admin/articles", adminAuth,function (req,res) {
     Article.findAll({
         include : [{model : Category}]
     })
@@ -16,7 +17,7 @@ Router.get("/admin/articles", function (req,res) {
 })
 
 //roda para fazer um novo arquivo
-Router.get("/admin/articles/new", function (req,res) {
+Router.get("/admin/articles/new", adminAuth,function (req,res) {
     Category.findAll()
         .then( (categories) =>{
             res.render('admin/articles/new', {categories : categories})
@@ -28,7 +29,7 @@ Router.get("/admin/articles/new", function (req,res) {
 });
 
 //rota pra salvar um arquivo
-Router.post("/articles/save", function (req, res) {
+Router.post("/articles/save",adminAuth, function (req, res) {
     const title = req.body.title;
     const body = req.body.body;
     const categoryId = req.body.categoryId;
@@ -49,7 +50,7 @@ Router.post("/articles/save", function (req, res) {
 })
 
 //rota pra deletar um artigo
-Router.post("/articles/delete", function (req, res) {
+Router.post("/articles/delete",adminAuth, function (req, res) {
     const id = req.body.id;
     if (id){
         Article.destroy({
@@ -62,7 +63,7 @@ Router.post("/articles/delete", function (req, res) {
     }
 });
 
-Router.get("/admin/articles/edit/:id", function (req,res) {
+Router.get("/admin/articles/edit/:id",adminAuth, adminAuth,function (req,res) {
     const id = req.params.id;
     if(isNaN(id)){
         res.redirect('/admin/articles');
@@ -82,7 +83,7 @@ Router.get("/admin/articles/edit/:id", function (req,res) {
         }).catch( () => res.redirect('/admin/articles') )
 });
 
-Router.post("/articles/update", function (req, res) {
+Router.post("/articles/update",adminAuth, function (req, res) {
     const id = req.body.id;
     const body = req.body.body;
     const title = req.body.title;
@@ -109,8 +110,6 @@ Router.get('/articles/page/:num', function (req, res) {
         .then(articles => {
             let next;
             next = offset + 8 <= articles.count;
-
-
             const result = {
                 page :  parseInt(page),
                 next : next,

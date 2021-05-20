@@ -2,20 +2,18 @@ const express = require("express");
 const Router = express.Router();
 const Category = require('./Category');
 const slugify = require('slugify');
+const adminAuth = require('../middleware/adminAuth')
 
 
 
-Router.get("/categories", function (req,res) {
-    res.send('rota de categorias');
-})
 
 //adicionar nova categoria
-Router.get("/admin/categories/new", function (req,res) {
+Router.get("/admin/categories/new", adminAuth, function (req,res) {
     res.render('admin/categories/new');
 });
 
 //rota para adicionar uma categoria no banco de dados
-Router.post('/categories/save', function (req, res) {
+Router.post('/categories/save',adminAuth, function (req, res) {
     const title = req.body.title;
 
     if(typeof title !== 'undefined'){
@@ -32,7 +30,7 @@ Router.post('/categories/save', function (req, res) {
 });
 
 //rota para ver as categorias
-Router.get('/admin/categories', function (req, res) {
+Router.get('/admin/categories',adminAuth, function (req, res) {
     Category.findAll()
         .then( (categories) =>{
             res.render('admin/categories/index',
@@ -41,7 +39,7 @@ Router.get('/admin/categories', function (req, res) {
 })
 
 //rota para deletar uma categoria do banco de dados
-Router.post("/categories/delete", function (req, res) {
+Router.post("/categories/delete",adminAuth, function (req, res) {
     const id = req.body.id;
     if (id){
         Category.destroy({
@@ -55,7 +53,7 @@ Router.post("/categories/delete", function (req, res) {
 });
 
 //rota para editar uma categoria, leva a um formulario
-Router.get("/admin/categories/edit/:id", function (req,res) {
+Router.get("/admin/categories/edit/:id",adminAuth, function (req,res) {
     const id = req.params.id;
     if(isNaN(id)){
         res.redirect('/admin/categories');
@@ -70,7 +68,7 @@ Router.get("/admin/categories/edit/:id", function (req,res) {
         }).catch( () => res.redirect('/admin/categories') )
 });
 
-Router.post("/categories/update", function (req, res) {
+Router.post("/categories/update",adminAuth, function (req, res) {
     const id = req.body.id;
     const title = req.body.title;
     Category.update(
