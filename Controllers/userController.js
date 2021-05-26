@@ -1,27 +1,7 @@
-const express = require('express');
-const Router = express.Router();
-const User = require('./User');
+const User =  require('../Models/User')
 const bcrypt = require('bcryptjs');
-const adminAuth = require('../middleware/adminAuth')
 
-
-Router.get('/admin/users', adminAuth, function (req, res) {
-    User.findAll()
-        .then(users => {
-            res.render('admin/users/index', {users: users})
-        })
-        .catch(error => {
-            console.log('error');
-            res.redirect('/');
-        })
-});
-
-
-Router.get('/admin/users/create', adminAuth, function (req, res) {
-    res.render('admin/users/create');
-})
-
-Router.post("/users/create", function (req, res) {
+const user_create = (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
@@ -43,13 +23,9 @@ Router.post("/users/create", function (req, res) {
 
         }
     });
-});
+}
 
-Router.get('/login', function (req, res) {
-    res.render('admin/users/login');
-})
-
-Router.post("/authenticate", function (req, res) {
+const user_authenticate = (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
@@ -66,18 +42,29 @@ Router.post("/authenticate", function (req, res) {
                     }
                     res.redirect('/admin/articles')
                 }else{
-                    res.redirect('/login')
+                    res.redirect('/user/login')
                 }
             }else{
-                res.redirect('/login')
+                res.redirect('/user/login')
             }
         })
-})
+}
 
-Router.get('/logout', function (req, res) {
+
+const user_login = (req, res) => {
+    res.render('admin/users/login');
+}
+
+
+const user_logout = (req, res) => {
     req.session.user = undefined;
-    res.redirect('/login')
-})
+    res.redirect('/user/login')
+}
 
-module.exports = Router;
 
+module.exports = {
+    user_create,
+    user_login,
+    user_logout,
+    user_authenticate
+}

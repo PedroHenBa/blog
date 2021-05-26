@@ -40,7 +40,7 @@
                 <td>
                     <a class="btn btn-warning" href="/admin/articles/edit/<%= article.id %>">Editar</a>
 
-                    <form action="/articles/delete" method="POST" class="d-inline">
+                    <form action="/article/delete" method="POST" class="d-inline">
                         <input type="hidden" name="id" value="<%= article.id %>">
                         <button class="btn btn-danger" data-text="Do you really want to delete that category"
                                 data-confirm-button="yes" data-cancel-button="no">Deletar

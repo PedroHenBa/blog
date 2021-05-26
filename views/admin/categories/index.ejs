@@ -40,7 +40,7 @@
 
                     <a class="btn btn-warning" href="/admin/categories/edit/<%= category.id %>">Editar</a>
 
-                    <form action="/categories/delete" method="POST" class="d-inline">
+                    <form action="/category/delete" method="POST" class="d-inline">
                         <input type="hidden" name="id" value="<%= category.id %>">
                         <button class="btn btn-danger" data-text="Do you really want to delete that category"
                                 data-confirm-button="yes" data-cancel-button="no">Deletar
