@@ -20,7 +20,7 @@ app.set('view engine', 'ejs');
 
 app.use(session({
     secret : "dajpsdpoaspodpaosjdposapodsoa",
-    cookie : {maxAge : 3000000}
+    cookie : {maxAge : 3000000000}
 }))
 
 //uses static files

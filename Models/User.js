@@ -12,8 +12,10 @@ const User = connection.define('user', {
         type: Sequelize.STRING,
         allowNull: false
     },
-});
+},
+    {timestamps: false}
+);
 
-// User.sync({force : true});
+User.sync();
 
 module.exports = User;

@@ -4,9 +4,11 @@ const userController = require('../Controllers/userController')
 const adminAuth = require('../middleware/adminAuth')
 
 
-Router.post("/create", adminAuth,  userController.user_create)
+Router.post("/create",  userController.user_create)
 
 Router.get('/login', userController.user_login)
+
+Router.get('/register', userController.user_register)
 
 Router.post("/authenticate", userController.user_authenticate)
 

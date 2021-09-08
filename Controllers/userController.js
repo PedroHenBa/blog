@@ -61,10 +61,15 @@ const user_logout = (req, res) => {
     res.redirect('/user/login')
 }
 
+const user_register = (req, res) => {
+    res.render('admin/users/register');
+}
+
 
 module.exports = {
     user_create,
     user_login,
     user_logout,
-    user_authenticate
+    user_authenticate,
+    user_register
 }

@@ -12,6 +12,8 @@
                 <% categories.forEach( function (categories) {%>
                     <a class="nav-link active" href="/category/<%= categories.slug%>">  <%= categories.title%> </a>
                 <%})%>
+                    <a href="/user/login" class="btn btn-primary nav-link active">Login</a>
+                    <a href="/user/register" class="btn btn-primary nav-link active ms-2">Register</a>
             </div>
         </div>
     </div>

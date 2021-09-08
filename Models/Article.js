@@ -17,7 +17,10 @@ const Article = connection.define('articles', {
     }
 });
 
-Category.hasMany(Article)
+
+Category.hasMany(Article);
 Article.belongsTo(Category);
+
+Article.sync();
 
 module.exports = Article;

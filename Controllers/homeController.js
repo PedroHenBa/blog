@@ -4,15 +4,15 @@ const Article = require('../Models/Article');
 
 const home_index = (req, res) => {
     Article.findAll({
-        order : [['id', 'DESC']],
+        order : [['id', 'desc']],
         limit : 8
-    })
-        .then((articles) => {
-            Category.findAll()
-                .then((categories) => {
+    }).then((articles) => {
+            Category.findAll().then((categories) => {
                     res.render('index', {articles: articles, categories : categories});
                 })
-        })
+        }).catch( (error) => {
+            console.log(error);
+    })
 }
 
 
@@ -58,7 +58,21 @@ const home_findByCategory_article = (req, res) => {
         })
 }
 
+const home_index_admin = (req, res) => {
+    Article.findAll({
+        order : [['id', 'desc']],
+        limit : 8
+    }).then((articles) => {
+        Category.findAll().then((categories) => {
+            res.render('indexAdmin', {articles: articles, categories : categories});
+        })
+    }).catch( (error) => {
+        console.log(error);
+    })
+}
+
 module.exports = {
+    home_index_admin,
     home_index,
     home_findByCategory_article,
     home_findOne_article
